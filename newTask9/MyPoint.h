@@ -1,7 +1,8 @@
 #pragma once
+
 #include <vector>
 using namespace std;
-class Point
+class MyPoint
 {
 public:
 	// 标志
@@ -13,7 +14,7 @@ public:
 	// 存储三角面片的信息
 	vector<int>listfacet;
 
-	~Point();
+	~MyPoint();
 	void addFacet(int i)
 	{
 		listfacet.push_back(i);
@@ -22,30 +23,30 @@ public:
 	{
 		this->index = index;
 	}
-	Point(float _x, float _y, float _z)
+	MyPoint(float _x, float _y, float _z)
 	{
 		this->_x = _x;
 		this->_y = _y;
 		this->_z = _z;
 	}
-	Point(int index, float _x, float _y, float _z)
+	MyPoint(int index, float _x, float _y, float _z)
 	{
 		this->index = index;
 		this->_x = _x;
 		this->_y = _y;
 		this->_z = _z;
 	}
-	Point()
+	MyPoint()
 	{}
 	// 重载
-	bool operator<(const Point& b)const
+	bool operator<(const MyPoint& b)const
 	{
 		//return false;
 		return (_x < b._x) || (_x == b._x) && (_y < b._y) || (_x == b._x && _y == b._y && _z < b._z);
 		//return true;
 		// 相等比较 
 	}
-	bool isEque(Point point)
+	bool isEque(MyPoint point)
 	{
 		if (point._x == _x && point._y == _y && point._z == _z)
 		{

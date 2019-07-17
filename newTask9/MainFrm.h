@@ -3,7 +3,7 @@
 //
 
 #pragma once
-
+#include "PointField.h"
 class CMainFrame : public CFrameWnd
 {
 	
@@ -38,6 +38,8 @@ protected:
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	DECLARE_MESSAGE_MAP()
 
+public:
+	afx_msg void OnField();
 };
 
 

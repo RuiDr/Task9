@@ -6,6 +6,9 @@
 #include "newTask9.h"
 
 #include "MainFrm.h"
+#include "PointField.h"
+
+PointField*pointfiled;
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -17,6 +20,7 @@ IMPLEMENT_DYNCREATE(CMainFrame, CFrameWnd)
 
 BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
 	ON_WM_CREATE()
+	ON_COMMAND(ID_Field, &CMainFrame::OnField)
 END_MESSAGE_MAP()
 
 static UINT indicators[] =
@@ -93,3 +97,17 @@ void CMainFrame::Dump(CDumpContext& dc) const
 
 // CMainFrame 消息处理程序
 
+
+
+void CMainFrame::OnField()
+{
+	// TODO: 在此添加命令处理程序代码
+	if (NULL == pointfiled)
+	{
+		// 创建非模态对话框实例
+		pointfiled = new PointField();
+		pointfiled->Create(IDD_DIALOG1, this);
+
+	}
+	pointfiled->ShowWindow(SW_SHOW);
+}

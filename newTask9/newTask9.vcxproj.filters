@@ -42,7 +42,16 @@
     <ClInclude Include="Model.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="Point1.h">
+    <ClInclude Include="MyPoint.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="PointField.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Area.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Volume.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
@@ -62,13 +71,22 @@
     <ClCompile Include="newTask9View.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="Point.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="Facet.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Model.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="MyPoint.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="PointField.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Area.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Volume.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

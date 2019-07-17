@@ -53,10 +53,13 @@ public:
 	afx_msg void OnOpengl1Draw();
 	afx_msg void OnSize(UINT nType, int cx, int cy);
 	afx_msg void OnDestroy();
-	afx_msg void OnOpenFile();
-	afx_msg void OnShow();
-	afx_msg void OnShowModel();
 	afx_msg void OnToPly();
+	afx_msg void OnFileOpen();
+	afx_msg void OnModelShow();
+
+	afx_msg void OnVolume();
+	afx_msg void OnArea();
+	afx_msg void OnSArea();
 };
 #ifndef _DEBUG  // newTask9View.cpp 中的调试版本
 inline CnewTask9Doc* CnewTask9View::GetDocument() const

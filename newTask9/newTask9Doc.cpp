@@ -22,6 +22,7 @@
 IMPLEMENT_DYNCREATE(CnewTask9Doc, CDocument)
 
 BEGIN_MESSAGE_MAP(CnewTask9Doc, CDocument)
+	ON_COMMAND(ID_32781, &CnewTask9Doc::OnModelShow)
 END_MESSAGE_MAP()
 
 
@@ -47,12 +48,7 @@ BOOL CnewTask9Doc::OnNewDocument()
 
 	return TRUE;
 }
-
-
-
-
 // CnewTask9Doc 序列化
-
 void CnewTask9Doc::Serialize(CArchive& ar)
 {
 	if (ar.IsStoring())
@@ -135,3 +131,9 @@ void CnewTask9Doc::Dump(CDumpContext& dc) const
 
 
 // CnewTask9Doc 命令
+
+
+void CnewTask9Doc::OnModelShow()
+{
+	// TODO: 在此添加命令处理程序代码
+}

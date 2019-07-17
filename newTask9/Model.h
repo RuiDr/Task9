@@ -2,7 +2,7 @@
 #pragma once
 #include<map>
 #include"Facet.h"
-#include"Point.h"
+#include"MyPoint.h"
 #include<gl/GLUT.H>
 #include<iostream>
 #include <iostream>
@@ -22,12 +22,12 @@ public:
 	// 模型的面片数据
 	map<int, Facet>modelFacet;
 	// 模型的点类数据,去重后的数据
-	map<int, Point>modelPoint;
+	map<int, MyPoint>modelPoint;
 	Model();
 	~Model();
-	void addPoint(Point point, int index)
+	void addPoint(MyPoint point, int index)
 	{
-		modelPoint.insert(pair<int, Point>(index, point));
+		modelPoint.insert(pair<int, MyPoint>(index, point));
 	}
 	void addFacet(int index, Facet facet)
 	{

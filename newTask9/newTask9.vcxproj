@@ -183,31 +183,37 @@
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Area.h" />
     <ClInclude Include="Facet.h" />
     <ClInclude Include="MainFrm.h" />
     <ClInclude Include="Model.h" />
+    <ClInclude Include="MyPoint.h" />
     <ClInclude Include="newTask9.h" />
     <ClInclude Include="newTask9Doc.h" />
     <ClInclude Include="newTask9View.h" />
-    <ClInclude Include="Point1.h" />
+    <ClInclude Include="PointField.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="Volume.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Area.cpp" />
     <ClCompile Include="Facet.cpp" />
     <ClCompile Include="MainFrm.cpp" />
     <ClCompile Include="Model.cpp" />
+    <ClCompile Include="MyPoint.cpp" />
     <ClCompile Include="newTask9.cpp" />
     <ClCompile Include="newTask9Doc.cpp" />
     <ClCompile Include="newTask9View.cpp" />
-    <ClCompile Include="Point.cpp" />
+    <ClCompile Include="PointField.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Volume.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="newTask9.rc" />
