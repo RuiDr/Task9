@@ -14,7 +14,7 @@
 #include "newTask9View.h"
 #include <iostream>
 #include "Model.h"
-#include "Point.h"
+#include "Point1.h"
 #include "Facet.h"
 #include <io.h> 
 #include <fcntl.h>
@@ -31,7 +31,6 @@ GLfloat modelview_matrix[16];
 GLfloat default_matrix[16];
 GLfloat angle = 0.0;
 void ReadStlFile(string fileName);
-void drawBunny();
 void mouse_move_func(int x, int y);
 void mouse_click_func(int button, int state, int x, int y);
 void absolute_default();
