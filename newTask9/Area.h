@@ -8,6 +8,7 @@ class Area : public CDialogEx
 public:
 	Area(CWnd* pParent = nullptr);   // 标准构造函数
 	virtual ~Area();
+
 	double areadata=0.0;
 
 // 对话框数据
@@ -21,4 +22,5 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	afx_msg void OnEnChangeAreatext();
+	// 面积
 };

@@ -19,6 +19,7 @@
 #include <io.h> 
 #include "Volume.h"
 #include "Area.h"
+#include "PointField.h"
 #include <fcntl.h>
 using namespace std;
 
@@ -28,6 +29,7 @@ using namespace std;
 // CnewTask9View
 Volume *volume;
 Area *area;
+PointField *cfiled;
 GLfloat x_min = .0, x_max = 20.0, y_min = .0, y_max = 20.0, z_min = .0, z_max = 20.0;
 GLfloat modelview_z_dis;
 GLfloat PI = 3.141596;
@@ -36,8 +38,12 @@ GLfloat default_matrix[16];
 GLfloat angle = 0.0;
 double Sarea = 0.0;
 double Vvolume;
+MyPoint getPoint;
+set<MyPoint>_listinsert;
+set<MyPoint>_setPoint;
+set<int>listPoint;
 void ReadStlFile(string fileName);
-
+void GetFieldcirculation(int index, int nField);
 Model model;
 IMPLEMENT_DYNCREATE(CnewTask9View, CView)
 
@@ -58,9 +64,12 @@ BEGIN_MESSAGE_MAP(CnewTask9View, CView)
 	ON_COMMAND(ID_32780, &CnewTask9View::OnFileOpen)
 	ON_COMMAND(ID_32781, &CnewTask9View::OnModelShow)
 	//ON_COMMAND(ID_N32779, &CnewTask9View::OnNFile)
-	ON_COMMAND(ID_Volume, &CnewTask9View::OnVolume)
-	ON_COMMAND(ID_Area, &CnewTask9View::OnArea)
-	ON_COMMAND(32785, &CnewTask9View::OnSArea)
+
+	ON_COMMAND(ID_Volume, &CnewTask9View::OnSArea)
+	ON_COMMAND(32785, &CnewTask9View::OnVolume)
+	ON_COMMAND(ID_Field, &CnewTask9View::OnField)
+	ON_WM_MOUSEMOVE()
+	ON_WM_MOUSEWHEEL()
 END_MESSAGE_MAP()
 
 // CnewTask9View 构造/析构
@@ -95,7 +104,13 @@ void CnewTask9View::OnDraw(CDC* /*pDC*/)
 // TODO: 在此添加命令处理程序代码
 	cout << "面片数 " << model.modelFacet.size() << endl;
 	glClear(GL_COLOR_BUFFER_BIT | GL_DOUBLE);
-	glMatrixMode(GL_MODELVIEW);
+	glMatrixMode(GL_MODELVIEW);	
+	double *data = m_arcball.GetRotationData();
+	//glLoadIdentity();
+	gluLookAt(0, 0, 3, 0, 0, 0, 0, 1, 0);
+	glMultMatrixd(data);
+	glScaled(m_dScale+1, m_dScale+1, m_dScale+1);
+	glTranslated(m_translate[0], m_translate[1], m_translate[2]);
 	for (auto it = model.modelFacet.begin();it != model.modelFacet.end();it++)
 	{
 		glPushMatrix();
@@ -113,7 +128,6 @@ void CnewTask9View::OnDraw(CDC* /*pDC*/)
 		glVertex3f(it->second._vertex_3._x / 100, it->second._vertex_3._y / 100, it->second._vertex_3._z / 100);
 		glEnd();
 
-
 		glBegin(GL_LINES);
 		glColor3f(0.0, 1.0, 0.0);
 		glVertex3f(it->second._vertex_1._x / 100, it->second._vertex_1._y / 100, it->second._vertex_1._z / 100);
@@ -129,7 +143,6 @@ void CnewTask9View::OnDraw(CDC* /*pDC*/)
 	SwapBuffers(wglGetCurrentDC());
 	// 交换缓冲区  
 	cout << " 绘制完成" << endl;
-
 	// TODO: 在此处为本机数据添加绘制代码
 }
 // CnewTask9View 打印
@@ -367,7 +380,6 @@ void CnewTask9View::OnToPly()
 	// TODO: 在此添加命令处理程序代码
 	CFileDialog fileDlg(FALSE);
 	//fileDlg.m_ofn.lpstrFilter= "TXT文件(*.txt)\0*.txt\0所有文件(*.*)\0*.*\0\0";
-
 }
 void CnewTask9View::OnFileOpen()
 {
@@ -433,38 +445,6 @@ void CnewTask9View::OnModelShow()
 	// 交换缓冲区  
 	cout << " 绘制完成" << endl;
 }
-
-
-void CnewTask9View::OnVolume()
-{
-	// TODO: 在此添加命令处理程序代码
-
-	if (NULL == volume)
-	{
-		// 创建非模态对话框实例  
-		volume = new Volume();
-		volume->Create(IDD_DIALOG2, this);
-	}
-	// 若对话框已打开，则显示非模态对话框  
-	volume->ShowWindow(SW_SHOW);
-}
-
-
-void CnewTask9View::OnArea()
-{
-	// TODO: 在此添加命令处理程序代码
-	if (NULL == area)
-	{
-		// 创建非模态对话框实例  
-		area = new Area();
-		area->Create(IDD_DIALOG3, this);
-	}
-	// 若对话框已打开，则显示非模态对话框  
-	area->ShowWindow(SW_SHOW);
-	//area->areadata = Sarea;
-	//area->DoDataExchange.SetWindowTextW();
-	
-}
 // 体积计算函数
 double GetVolume()
 {
@@ -475,20 +455,135 @@ double GetArea()
 {
 	return Sarea;
 }
-
+// 计算n环领域
 
 void CnewTask9View::OnSArea()
 {
 	// TODO: 在此添加命令处理程序代码
+	CString s;
+	GetArea();
+	s.Format(TEXT("%.2lf"), Sarea);
 	if (NULL == area)
 	{
-		// 创建非模态对话框实例  
 		area = new Area();
-		area->Create(IDD_DIALOG3, this);
+		area->Create(IDD_DIALOG2, this);
 	}
-	// 若对话框已打开，则显示非模态对话框  
 	area->ShowWindow(SW_SHOW);
-	//area->areadata = Sarea;
-	//area->DoDataExchange.SetWindowTextW();
+	area->SetDlgItemTextW(ID_EDIT_COPY,s);
+}
+void CnewTask9View::OnVolume()
+{
+	// TODO: 在此添加命令处理程序代码
+	CString s;
+	GetVolume();
+	s.Format(TEXT("%.2lf"), Vvolume);
+	if (NULL == volume)
+	{
+		volume = new Volume();
+		volume->Create(IDD_DIALOG3, this);
+	}
+	volume->ShowWindow(SW_SHOW);
+	volume->SetDlgItemTextW(ID_EDIT_CUT, s);
+}
+// n环领域
+void CnewTask9View::OnField()
+{
+	AllocConsole();
+	// TODO: 在此添加命令处理程序代码
+	int index;
+	int nField;
+	CString strEDIT1, strEDIT2, strEDIT3;
+	// 获取ID号为xxx的从string字符串
+	// 点
+	CString s;
 
+	if (NULL == cfiled)
+	{
+		cfiled = new PointField();
+		cfiled->Create(IDD_DIALOG1, this);
+	}
+	cfiled->ShowWindow(SW_SHOW);
+	cfiled->OnBnClickedButton1();
+	// 求取领域
+	freopen("CONOUT$", "w+t", stdout);// 申请写
+	freopen("CONIN$", "r+t", stdin);  // 申请读
+	cout<<"求领域"<<endl;
+	GetFieldcirculation(cfiled->index, cfiled->field);
+	s.Format(TEXT("%d"), _setPoint.size());
+	cfiled->SetDlgItemTextW(ID_EDIT_FIND, s);
+}
+void GetFieldcirculation(int index, int nField)
+{
+	int size = 0;
+	// 根据index找到点,注意重复问题，已经判断的点不能再次加入
+	list<int>_listPointTemp;
+	auto ittt = model.modelPoint.find(index);
+	if (ittt != model.modelPoint.end())
+	{
+		getPoint = ittt->second;
+	}
+	_listPointTemp.push_back(index);
+	listPoint.insert(index);
+	while (nField > 0)
+	{
+		int start = 0, size = _listPointTemp.size();
+		while ((!_listPointTemp.empty()) && (start < size))
+		{
+			// 出栈,返回第一个函数
+			//cout << "Point Size is : " << _listPointTemp.size() << endl;
+			index = _listPointTemp.front();
+			//cout << "index :" << index << endl;
+			_listPointTemp.pop_front();
+			for (auto it = model.modelPoint.begin();it != model.modelPoint.end();it++)
+			{
+				if (index == it->second.index)
+				{
+					vector<int>listInt = it->second.listfacet;
+					for (auto i = listInt.begin();i != listInt.end();i++)
+					{
+						auto it = model.modelFacet.find(*i);
+						//Facet facet=it->second;
+						if (listPoint.count(it->second._vertex_1.index) == 0)
+						{
+							listPoint.insert(it->second._vertex_1.index);
+							_listPointTemp.push_back(it->second._vertex_1.index);
+							_setPoint.insert(it->second._vertex_1);
+						}
+						if (listPoint.count(it->second._vertex_2.index) == 0)
+						{
+							listPoint.insert(it->second._vertex_2.index);
+							_listPointTemp.push_back(it->second._vertex_2.index);
+							_setPoint.insert(it->second._vertex_2);
+
+						}
+						if (listPoint.count(it->second._vertex_3.index) == 0)
+						{
+							listPoint.insert(it->second._vertex_3.index);
+							_listPointTemp.push_back(it->second._vertex_3.index);
+							_setPoint.insert(it->second._vertex_3);
+						}
+					}
+					break;
+				}
+			}
+			size--;
+		}
+		nField--;
+	}
+	cout << " list is :" << listPoint.size() << endl;
+}
+void CnewTask9View::OnMouseMove(UINT nFlags, CPoint point)
+{
+	// TODO: 在此添加消息处理程序代码和/或调用默认值
+
+	CView::OnMouseMove(nFlags, point);
+}
+
+
+BOOL CnewTask9View::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
+{
+	// TODO: 在此添加消息处理程序代码和/或调用默认值
+	m_dScale*= (1+ zDelta * 0.001);
+	Invalidate(false);
+	return CView::OnMouseWheel(nFlags, zDelta, pt);
 }

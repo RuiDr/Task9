@@ -15,6 +15,7 @@ IMPLEMENT_DYNAMIC(Area, CDialogEx)
 
 Area::Area(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_DIALOG2, pParent)
+
 {
 
 }
@@ -26,6 +27,7 @@ Area::~Area()
 void Area::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
+
 }
 
 
@@ -35,8 +37,6 @@ END_MESSAGE_MAP()
 // Area 消息处理程序
 void Area::OnEnChangeAreatext()
 {
-	
-
 	// TODO:  如果该控件是 RICHEDIT 控件，它将不
 	// 发送此通知，除非重写 CDialogEx::OnInitDialog()
 	// 函数并调用 CRichEditCtrl().SetEventMask()，

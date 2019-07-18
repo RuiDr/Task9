@@ -21,5 +21,10 @@ protected:
 
 	DECLARE_MESSAGE_MAP()
 public:
+	int index;
+	int field;
 	afx_msg void OnEnChangePointindex();
+	afx_msg void OnBnClickedButton1();
+	CString pointindex;
+	CString fieldindex;
 };

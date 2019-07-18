@@ -16,8 +16,6 @@ class CnewTask9App : public CWinApp
 {
 public:
 	CnewTask9App() noexcept;
-
-
 // 重写
 public:
 	virtual BOOL InitInstance();

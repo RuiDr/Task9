@@ -5,7 +5,8 @@
 #include "newTask9.h"
 #include "PointField.h"
 #include "afxdialogex.h"
-
+#include <iostream>
+using namespace std;
 
 // PointField 对话框
 
@@ -13,6 +14,8 @@ IMPLEMENT_DYNAMIC(PointField, CDialogEx)
 
 PointField::PointField(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_DIALOG1, pParent)
+	, pointindex(_T(""))
+	, fieldindex(_T(""))
 {
 
 }
@@ -24,11 +27,14 @@ PointField::~PointField()
 void PointField::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
+	DDX_Text(pDX, ID_EDIT_CLEAR, pointindex);
+	DDX_Text(pDX, ID_EDIT_PASTE, fieldindex);
 }
 
 
 BEGIN_MESSAGE_MAP(PointField, CDialogEx)
 	ON_EN_CHANGE(PointIndex, &PointField::OnEnChangePointindex)
+	ON_BN_CLICKED(IDC_BUTTON1, &PointField::OnBnClickedButton1)
 END_MESSAGE_MAP()
 
 
@@ -44,3 +50,25 @@ void PointField::OnEnChangePointindex()
 
 	// TODO:  在此添加控件通知处理程序代码
 }
+
+// 按钮事件
+void PointField::OnBnClickedButton1()
+{
+	AllocConsole();
+	int index;
+	int nField;
+	// TODO: 在此添加控件通知处理程序代码
+	CString strEDIT1, strEDIT2, strEDIT3;
+	GetDlgItem(ID_EDIT_CLEAR)->GetWindowText(strEDIT1);
+	GetDlgItem(ID_EDIT_PASTE)->GetWindowText(strEDIT2);
+
+	// 领域
+	index = _ttol(strEDIT1);
+	this->index = index;
+	nField = _ttol(strEDIT2);
+	this->field = nField;
+	freopen("CONOUT$", "w+t", stdout);// 申请写
+	freopen("CONIN$", "r+t", stdin);  // 申请读
+	cout << "求领域" << endl;
+}
+
